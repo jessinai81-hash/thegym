@@ -1,6 +1,6 @@
-import { db } from '../_lib/db.js'
-import { requireUserId } from '../_lib/auth.js'
-import { HttpError, readBody, route, toInt } from '../_lib/http.js'
+import { db } from '../../_lib/db.js'
+import { requireUserId } from '../../_lib/auth.js'
+import { HttpError, readBody, route, toInt } from '../../_lib/http.js'
 
 // POST /api/workouts/start { workoutId } → marks it in progress (keeps the original start time on repeat calls).
 export default route({

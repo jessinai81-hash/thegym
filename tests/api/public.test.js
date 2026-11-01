@@ -58,8 +58,15 @@ describe.skipIf(!hasDb)('/api/exercises', () => {
 
 describe('routing', () => {
   it('unknown API routes return a JSON 404', async () => {
-    const res = await (await anon()).get('/api/does-not-exist')
-    expect(res.status).toBe(404)
-    expect(res.body.error).toBe('not_found')
+    for (const path of ['/api/does-not-exist', '/api/workouts/nope', '/api/workouts/constructor', '/api/workouts/__proto__']) {
+      const res = await (await anon()).post(path)
+      expect(res.status, path).toBe(404)
+      expect(res.body.error).toBe('not_found')
+    }
+  })
+
+  it('stays within Vercel Hobby’s 12-function limit', async () => {
+    const { collectRoutes } = await import('../../server/app.js')
+    expect(collectRoutes().length).toBeLessThanOrEqual(12)
   })
 })

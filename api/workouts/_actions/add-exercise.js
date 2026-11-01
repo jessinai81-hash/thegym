@@ -1,8 +1,8 @@
-import { db } from '../_lib/db.js'
-import { requireUserId } from '../_lib/auth.js'
-import { HttpError, readBody, route, toInt } from '../_lib/http.js'
-import { getTimeZone, localDate } from '../_lib/time.js'
-import { findWorkout, getOrCreateOpenWorkout, renameWorkout } from '../_lib/workouts.js'
+import { db } from '../../_lib/db.js'
+import { requireUserId } from '../../_lib/auth.js'
+import { HttpError, readBody, route, toInt } from '../../_lib/http.js'
+import { getTimeZone, localDate } from '../../_lib/time.js'
+import { findWorkout, getOrCreateOpenWorkout, renameWorkout } from '../../_lib/workouts.js'
 
 // POST /api/workouts/add-exercise { exerciseId } → adds it (with its sets) to today's open workout.
 export default route({

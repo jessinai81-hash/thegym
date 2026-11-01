@@ -1,7 +1,7 @@
-import { db } from '../_lib/db.js'
-import { requireUserId } from '../_lib/auth.js'
-import { HttpError, readBody, route, toInt } from '../_lib/http.js'
-import { findWorkout, renameWorkout } from '../_lib/workouts.js'
+import { db } from '../../_lib/db.js'
+import { requireUserId } from '../../_lib/auth.js'
+import { HttpError, readBody, route, toInt } from '../../_lib/http.js'
+import { findWorkout, renameWorkout } from '../../_lib/workouts.js'
 
 // POST /api/workouts/remove-exercise { workoutExerciseId } → removes it from a workout you haven't finished.
 export default route({
