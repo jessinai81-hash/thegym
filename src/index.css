@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  .dark {
+    --bg: 7 9 12;
+    --surface: 18 22 29;
+    --fg: 238 242 246;
+    --muted: 140 151 166;
+    --line: 255 255 255;
+    --lime: 198 255 61;
+    --cyan: 34 228 255;
+    --volt: 198 255 61;
+    --ink: 7 9 12;
+    --glass-alpha: 0.55;
+    --line-alpha: 0.08;
+    --grid: 255 255 255;
+    color-scheme: dark;
+  }
+
+  .light {
+    --bg: 244 246 241;
+    --surface: 255 255 255;
+    --fg: 13 17 23;
+    --muted: 87 98 113;
+    --line: 15 23 42;
+    --lime: 77 124 15;
+    --cyan: 8 132 163;
+    --volt: 190 250 50;
+    --ink: 7 9 12;
+    --glass-alpha: 0.72;
+    --line-alpha: 0.09;
+    --grid: 15 23 42;
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    min-height: 100dvh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    background: rgb(var(--volt) / 0.35);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--volt));
+    outline-offset: 2px;
+    border-radius: 10px;
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgb(var(--surface) / var(--glass-alpha));
+    border: 1px solid rgb(var(--line) / var(--line-alpha));
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    @apply rounded-3xl shadow-card;
+  }
+
+  .text-gradient {
+    background: linear-gradient(100deg, rgb(var(--lime)) 0%, rgb(var(--cyan)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-gradient-brand {
+    background: linear-gradient(120deg, #c6ff3d 0%, #22e4ff 100%);
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-display text-sm font-semibold
+      transition-all duration-200 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-volt text-ink hover:shadow-glow hover:-translate-y-0.5;
+  }
+
+  .btn-ghost {
+    @apply btn text-fg hover:bg-fg/5;
+    border: 1px solid rgb(var(--line) / calc(var(--line-alpha) * 1.6));
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium;
+    background: rgb(var(--fg) / 0.06);
+  }
+
+  .hairline {
+    border-color: rgb(var(--line) / var(--line-alpha));
+  }
+
+  .eyebrow {
+    @apply font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted;
+  }
+}
+
+/* Loading skeletons: a soft shimmer that matches the glass cards */
+.skeleton {
+  background: linear-gradient(
+    100deg,
+    rgb(var(--fg) / 0.05) 20%,
+    rgb(var(--fg) / 0.11) 40%,
+    rgb(var(--lime) / 0.08) 50%,
+    rgb(var(--fg) / 0.05) 70%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: 150% 0; }
+  100% { background-position: -50% 0; }
+}
+
+/* Ambient glow orbs behind the UI */
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  opacity: 0.35;
+}
+.light .orb {
+  opacity: 0.22;
+}
+
+/* Subtle grid texture */
+.grid-bg {
+  background-image:
+    linear-gradient(rgb(var(--grid) / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--grid) / 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse at top, black 30%, transparent 75%);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Recharts tweaks */
+.recharts-cartesian-grid line {
+  stroke: rgb(var(--grid) / 0.07);
+}
+.recharts-text {
+  fill: rgb(var(--muted));
+  font-size: 12px;
+}
+.recharts-surface:focus,
+.recharts-wrapper:focus,
+.recharts-sector:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
