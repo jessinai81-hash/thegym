@@ -65,6 +65,24 @@ describe.skipIf(!hasDb)('auth: sign up', () => {
   })
 })
 
+describe.skipIf(!hasDb)('auth: missing JWT_SECRET', () => {
+  it('sign-up fails cleanly without creating a half-made account', async () => {
+    const email = testEmail('nojwt')
+    const saved = process.env.JWT_SECRET
+    delete process.env.JWT_SECRET
+    try {
+      const res = await (await anon()).post('/api/auth/signup').send({ fullName: 'No Secret', email, password: PASSWORD })
+      expect(res.status).toBe(500)
+      expect(res.body.error).toBe('auth_not_configured')
+    } finally {
+      process.env.JWT_SECRET = saved
+    }
+    // with the secret back, the same email can sign up — nothing was saved the first time
+    const retry = await (await anon()).post('/api/auth/signup').send({ fullName: 'No Secret', email, password: PASSWORD })
+    expect(retry.status).toBe(201)
+  })
+})
+
 describe.skipIf(!hasDb)('auth: login, me, logout', () => {
   it('logs in with the right password', async () => {
     const { credentials } = await newUser()

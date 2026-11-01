@@ -16,6 +16,11 @@ function secret() {
 // logged-out visitors don't fire a /api/auth/me request that the browser would log as a 401 error.
 const HINT_COOKIE = 'pf_logged_in'
 
+/** Throws before any work is done if JWT_SECRET is missing, so sign-up can't half-succeed. */
+export function assertAuthConfigured() {
+  secret()
+}
+
 function cookie(value, maxAge, { httpOnly = true, name = COOKIE } = {}) {
   const parts = [`${name}=${value}`, 'Path=/', ...(httpOnly ? ['HttpOnly'] : []), 'SameSite=Lax', `Max-Age=${maxAge}`]
   if (process.env.VERCEL || process.env.NODE_ENV === 'production') parts.push('Secure')

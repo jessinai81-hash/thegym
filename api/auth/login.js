@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { db } from '../_lib/db.js'
-import { setSession } from '../_lib/auth.js'
+import { assertAuthConfigured, setSession } from '../_lib/auth.js'
 import { HttpError, readBody, route } from '../_lib/http.js'
 import { getTimeZone, localDate } from '../_lib/time.js'
 import { streaks } from '../_lib/workouts.js'
@@ -11,6 +11,7 @@ const DUMMY_HASH = bcrypt.hashSync('pulsefit-timing-guard', 10)
 
 export default route({
   async POST(req, res) {
+    assertAuthConfigured()
     const body = readBody(req)
     const email = normalizeEmail(body.email)
     const password = String(body.password ?? '')

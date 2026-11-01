@@ -1,11 +1,12 @@
 import bcrypt from 'bcryptjs'
 import { db } from '../_lib/db.js'
-import { setSession } from '../_lib/auth.js'
+import { assertAuthConfigured, setSession } from '../_lib/auth.js'
 import { HttpError, readBody, route } from '../_lib/http.js'
 import { intInRange, normalizeEmail, publicUser, validatePassword } from '../_lib/users.js'
 
 export default route({
   async POST(req, res) {
+    assertAuthConfigured()
     const body = readBody(req)
     const fullName = String(body.fullName ?? '').trim()
     if (fullName.length < 1 || fullName.length > 80) {
